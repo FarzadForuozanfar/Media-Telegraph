@@ -1,0 +1,11 @@
+header h1 {
+    font-size: 56px;
+    background: -webkit-linear-gradient(gray, darkgray, gold, yellow);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.bg-gray-light {
+    background-image: linear-gradient(to right top, #eaeaea, #c0c0c0, #bbbbbb, #b6b6b6, #b1b1b1, #acacac, #a7a7a7, #a2a2a2, #9c9c9c, #959595, #8f8f8f, #898989) !important;
+    box-shadow:5px 5px 30px 1px #c0c0c0 !important;
+}

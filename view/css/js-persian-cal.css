@@ -1,0 +1,161 @@
+/*
+JS Persian Calendar - by AMIB
+http://amib.ir/weblog
+amib@amib.ir
+*/
+
+
+input.pdate {
+	text-align: center;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-left: 0;
+}
+
+input.valid {
+	background-color: #e5fae2;
+}
+
+input.invalid {
+	background-color: #fee5e7;
+}
+
+div.picker {
+	direction: rtl;
+	background-color: #fff;
+	border: 2px solid #999999;
+	position: absolute;
+	padding: 3px;
+	box-shadow: 1px 1px 2px rgba( 0, 0, 0, 0.3 );
+	border-radius: 6px 0px 6px 6px;
+}
+
+div.picker table{
+	border-collapse: collapse;
+	border-spacing: 0px;
+	border: 1px solid #bbb;
+	background-color: #eee;
+	font: 11px Tahoma;
+}
+
+div.picker td {
+	width: 22px;
+	border: 1px solid #bbb;
+	text-align: center;
+	padding: 0px;
+}
+
+div.picker div.navBack {
+/*	float: right;
+	uncommenting this line breaks IE display of element
+	in some unknown situations !
+*/
+}
+
+div.picker div.navBack a{
+	float: right;
+}
+
+div.picker div.navFwd {
+	float: left;
+}
+
+div.picker div.navFwd a {
+	float: left;
+}
+
+div.picker span.navInfo {
+	padding: 5px 0px;
+	display: inline-block;
+}
+
+div.picker td.pickerHead a {
+	padding: 5px;
+}
+
+div.picker td.pickerHead a.nav {
+	display: block;
+}
+
+div.picker td.pickerHead a.monYear {
+	display: inline-block;
+	padding-left: 1px;
+	padding-right: 1px;
+}
+
+div.picker a.weekday {
+	display: block;
+	padding: 2px 0px;
+}
+
+div.picker a.friday {
+	background-color: #ffcccc;
+}
+
+div.picker a.selected {
+	background-color: #CCFFCC;
+}
+
+div.picker a.today {
+	background-color: #fff5cc;
+}
+
+div.picker td.calWeekdays {
+	background-color: #BBBBBB;
+	color: #FFFFFF;
+	font-weight: bold;
+	text-align: center;
+	padding-top: 3px;
+	padding-bottom: 2px;
+}
+
+div.picker td.pickerFoot a {
+	display: block;
+	padding: 2px;
+}
+
+div.picker a {
+	text-decoration: none;
+	color: #333;
+	-moz-transition: all 0.1s cubic-bezier(0,1,1,0);
+	-webkit-transition: all 0.1s cubic-bezier(0,1,1,0);
+	-o-transition: all 0.1s cubic-bezier(0,1,1,0);
+	transition: all 0.1s cubic-bezier(0,1,1,0);
+}
+
+div.picker a:hover {
+	text-decoration: none;
+	color: #004;
+	background-color: #66CCFF;
+}
+
+div.monthYearPicker {
+	background-color: #EEEEEE;
+	border: solid 2px #999;
+	border-radius: 3px;
+	box-shadow: 1px 1px 2px rgba( 0, 0, 0, 0.3 );
+	text-align: center;
+	position: absolute;
+	font: 11px Tahoma;
+}
+
+div.monthYearPicker a {
+	text-decoration: none;
+	color: #333;
+	-moz-transition: all 0.1s cubic-bezier(0,1,1,0);
+	-webkit-transition: all 0.1s cubic-bezier(0,1,1,0);
+	-o-transition: all 0.1s cubic-bezier(0,1,1,0);
+	transition: all 0.1s cubic-bezier(0,1,1,0);
+	display: block;
+	padding: 5px;
+}
+
+div.monthYearPicker a.selected {
+	background-color: #CCFFCC;
+}
+
+div.monthYearPicker a:hover {
+	text-decoration: none;
+	color: #004;
+	background-color: #66CCFF;
+}
