@@ -14,5 +14,6 @@ calendar_btn[0].appendChild(elem);
 let calendar = document.getElementById("calendar");
 calendar.appendChild(calendar_btn[0]);
 console.log(calendar);
+console.log(screen.width);
 
 
