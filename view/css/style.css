@@ -1,11 +1,112 @@
 header h1 {
-    font-size: 56px;
-    background: -webkit-linear-gradient(gray, darkgray, gold, yellow);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  font-size: 56px;
+  background: -webkit-linear-gradient(gray, darkgray, gold, yellow);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.bg-gray-light {
-    background-image: linear-gradient(to right top, #eaeaea, #c0c0c0, #bbbbbb, #b6b6b6, #b1b1b1, #acacac, #a7a7a7, #a2a2a2, #9c9c9c, #959595, #8f8f8f, #898989) !important;
-    box-shadow:5px 5px 30px 1px #c0c0c0 !important;
+.bg-yellow{
+  background-color:yellow !important; 
 }
+.bg-yellow:hover{
+  background-color:rgb(255, 247, 0) !important; 
+}
+.from-gray
+{
+    --tw-gradient-from: #9ca3af;
+    --tw-gradient-to: rgb(156 163 175 / 0);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+.bg-gray-light {
+  background-image: linear-gradient(to right top, #eaeaea, #c0c0c0, #bbbbbb, #b6b6b6, #b1b1b1, #acacac, #a7a7a7, #a2a2a2, #9c9c9c, #959595, #8f8f8f, #898989) !important;
+  box-shadow: 5px 5px 30px 1px #c0c0c0 !important;
+}
+
+.menu-bar:hover {
+  transition: all 0.5s;
+  border-radius: 15px;
+  background-color: yellow;
+  color: black !important;
+}
+
+.profile-container {
+  position: absolute !important;
+  /*top: 110px !important;*/
+  border-top-left-radius:solid;
+  border-top-right-radius:solid;
+  border-width: 4px;
+  border-color: #fff200;
+  top: 25% !important;
+  left: 35% !important;
+}
+.gray-container {
+  background-color: #1b1b1b;
+}
+.profile-image
+{
+  padding: 0;
+  margin: 0;
+  margin-left: 10px;
+  box-sizing: border-box;
+  width: 55px;
+  height: 55px;
+  border-radius: 100%;
+  border-style:solid;
+  border-width: 2.5px;
+  border-color: #fff200;
+}
+.add-comment
+{
+  border-radius: 20px;
+  width: 50%;
+  height: 60px;
+  background-color: #d2d2d2;
+}
+.recently-image
+{
+  padding: 0;
+  margin: 0;
+  margin-left: 10px;
+  box-sizing: border-box;
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  border-style:solid;
+  border-width: 2.5px;
+  border-color: #fff200;
+}
+.img-profile
+{
+  padding: 0;
+  position: absolute;
+  top: 45%;
+  left: 230px;
+  width: 200px;
+  height: 200px;
+  border-radius: 100% !important;
+  border-color: #fff200;
+  border-width: 5px;
+  border-style:inherit;
+  color: red;
+}
+
+/**/
+
+.profile-head {
+  transform: translateY(5rem)
+}
+.display-none
+{
+  display: none;
+}
+.cover {
+  background-image: url(https://picsum.photos/id/2/1500/800);
+  background-size: cover;
+  background-repeat: no-repeat
+}
+@media only screen and (max-width: 768px) {
+  .display-none {
+    display: flex;
+  }
+}
+
