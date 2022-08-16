@@ -1,17 +1,16 @@
 <?php
-    if(!empty($_POST['caption']))
+    if(!empty($_POST['caption2']))
     {
         include 'model/database.php';
         $user_id = $_SESSION['username_login']['id'];  
-        $caption = $_POST['caption'];
+        $caption = $_POST['caption2'];
         
         $db->query("INSERT INTO posts (caption, user_id) VALUES ('$caption','$user_id')");
         echo $db->error;
         header("Location:home");
     }
-    else
+    else if(!empty($_POST['caption1']))
     {
-        // caption is null
-        echo "null";
+
     }
 ?>
