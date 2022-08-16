@@ -7,7 +7,11 @@
                 <p class="lead">
                     The page you’re looking for doesn’t exist.
                   </p>
-                <a href="index" class="btn btn-outline-warning">Go Home</a>
+                <?php if(empty($_SESSION['username_login'])): ?>
+                  <a href="index" class="btn btn-outline-warning">Go Home</a>
+                <?php else :?>
+                    <a href="home" class="btn btn-outline-warning">Go Home</a>
+                <?php endif; ?>
             </div>
         </div>
 <?php include 'footer.php';?>
