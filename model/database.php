@@ -7,6 +7,6 @@
     }
     else
     {
-        $db->query("SET CHARACTER SET utf8");
+        $db->query("SET CHARACTER SET utf8mb4");
     }
 ?>
