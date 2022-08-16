@@ -5,18 +5,20 @@ header h1 {
   -webkit-text-fill-color: transparent;
 }
 
-.bg-yellow{
-  background-color:yellow !important; 
+.bg-yellow {
+  background-color: yellow !important;
 }
-.bg-yellow:hover{
-  background-color:rgb(255, 247, 0) !important; 
+
+.bg-yellow:hover {
+  background-color: rgb(255, 247, 0) !important;
 }
-.from-gray
-{
-    --tw-gradient-from: #9ca3af;
-    --tw-gradient-to: rgb(156 163 175 / 0);
-    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+
+.from-gray {
+  --tw-gradient-from: #9ca3af;
+  --tw-gradient-to: rgb(156 163 175 / 0);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
+
 .bg-gray-light {
   background-image: linear-gradient(to right top, #eaeaea, #c0c0c0, #bbbbbb, #b6b6b6, #b1b1b1, #acacac, #a7a7a7, #a2a2a2, #9c9c9c, #959595, #8f8f8f, #898989) !important;
   box-shadow: 5px 5px 30px 1px #c0c0c0 !important;
@@ -32,38 +34,46 @@ header h1 {
 .profile-container {
   position: absolute !important;
   /*top: 110px !important;*/
-  border-top-left-radius:solid;
-  border-top-right-radius:solid;
+  border-top-left-radius: solid;
+  border-top-right-radius: solid;
   border-width: 4px;
   border-color: #fff200;
   top: 25% !important;
   left: 35% !important;
 }
+.responsive
+{
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 25px !important;
+}
 .gray-container {
   background-color: #1b1b1b;
 }
-.profile-image
-{
+
+.profile-image {
   padding: 0;
   margin: 0;
   margin-left: 10px;
   box-sizing: border-box;
-  width: 55px;
-  height: 55px;
-  border-radius: 100%;
-  border-style:solid;
+  width: 55px !important;
+  height:55px;
+  border-radius: 50%;
+  border-style: solid;
   border-width: 2.5px;
   border-color: #fff200;
+  image-rendering: optimizeSpeed;
+  object-fit:fill;
 }
-.add-comment
-{
+
+.add-comment {
   border-radius: 20px;
   width: 50%;
   height: 60px;
   background-color: #d2d2d2;
 }
-.recently-image
-{
+
+.recently-image {
   padding: 0;
   margin: 0;
   margin-left: 10px;
@@ -71,12 +81,12 @@ header h1 {
   width: 50px;
   height: 50px;
   border-radius: 100%;
-  border-style:solid;
+  border-style: solid;
   border-width: 2.5px;
   border-color: #fff200;
 }
-.img-profile
-{
+
+.img-profile {
   padding: 0;
   position: absolute;
   top: 45%;
@@ -86,7 +96,7 @@ header h1 {
   border-radius: 100% !important;
   border-color: #fff200;
   border-width: 5px;
-  border-style:inherit;
+  border-style: inherit;
   color: red;
 }
 
@@ -95,17 +105,49 @@ header h1 {
 .profile-head {
   transform: translateY(5rem)
 }
-.display-none
-{
+
+.display-none {
   display: none;
 }
+
 .cover {
   background-image: url(https://picsum.photos/id/2/1500/800);
   background-size: cover;
   background-repeat: no-repeat
 }
+
 @media only screen and (max-width: 768px) {
   .display-none {
     display: flex;
   }
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 20px;
+  height: 50px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: #343434;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #fcea63;
+  border-radius: 100vh;
+  border: 3px solid #f6f7ed;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #fcee2c;
+}
+
+.profile-comments {
+  padding: 0;
+  border-radius: 100%;
+  width: 35px;
+  height: 35px;
+  border-width: 2.5px !important;
+  border-style: solid !important;
+  border-color: #fff200 !important;
 }
