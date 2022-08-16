@@ -51,39 +51,92 @@ function upload_audio() {
         
 }
 
+function UploadMedia(statuse){
+        if(statuse == 'show')
+        {
+                document.getElementById("media").style.display = "block";
+                document.getElementById("fileUpload").value = null;
+        }
+        else if(statuse == 'hide')
+        {
+                document.getElementById("media").style.display = "none";
+                document.getElementById("fileUpload").value = null;
+        }
+        
+}
+
 function CheckSize(input) {
         const fileSize = input.files[0].size / 1024 / 1024; // in MiB
         if (fileSize > 4) {
                 alert('File size exceeds 4 MiB');
                 input_photo.value = null;
         }
-        console.log(input.files[0].type.split('/')[0]);
 }
-function CheckInput(type) {
-        if (input_photo.files[0] != null) {
+function CheckInput(type,id) {
+        let element = document.getElementById(id);
+        if (element.files[0] != null) {
                 if (type == 'image') {
-                        if(input_photo.files[0].type.split('/')[0] != 'image') {
-                                input_photo.value = null;
+                        if(element.files[0].type.split('/')[0] != 'image') {
+                                element.value = null;
                                 alert('Please select a photo to upload');
                         }
+                        else
+                        {
+                                alert("successfully uploaded");
+                        }
+                        
                 }
-
                 else if (type == 'video') {
-                        if(input_photo.files[0].type.split('/')[0] != 'video') {
-                                input_photo.value = null;
+                        if(element.files[0].type.split('/')[0] != 'video') {
+                                element.value = null;
                                 alert('Please select a video to upload');
+                        }
+                        else
+                        {
+                                alert("successfully uploaded");
                         }
                 }
                 else if (type == 'audio') {
-                        if(input_photo.files[0].type.split('/')[0] != 'audio') {
-                                input_photo.value = null;
+                        if(element.files[0].type.split('/')[0] != 'audio') {
+                                element.value = null;
                                 alert('Please select a audio to upload');
                         }
+                        else
+                        {
+                                alert("successfully uploaded");
+                        }
                 }
+                else if (type == 'media') {
+                        if(element.files[0].type.split('/')[0] != 'image' && element.files[0].type.split('/')[0] != 'audio' && element.files[0].type.split('/')[0] != 'video') {
+                                element.value = null;
+                                alert('Please select a media to upload');
+                        }
+                        else
+                        {
+                                alert("successfully uploaded");
+                        }
+                }
+
         }
         else
                 alert("Please first upload an " + type);
 }
+function ShowHideComments(id)
+{
+        element = document.getElementById(id);
+        element.innerHTML ='';
+        if(element.getAttribute('name') == 'hide')
+        {
+                element.setAttribute('name','show');
+                element.innerHTML = 'Hide Comments';
+        }
+        else
+        {
+                element.setAttribute('name','hide');
+                element.innerHTML = 'Show Comments'; 
+        }
+}
+
 var objCal1 = new AMIB.persianCalendar('pcal1',
         { extraInputID: "extra", extraInputFormat: "YYYYMMDD" }
 );
