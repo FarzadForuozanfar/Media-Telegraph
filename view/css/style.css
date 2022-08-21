@@ -41,12 +41,18 @@ header h1 {
   top: 25% !important;
   left: 35% !important;
 }
-.responsive
-{
+
+.responsive {
   width: 100% !important;
   height: 100% !important;
   border-radius: 25px !important;
 }
+
+.posts {
+  width: 100%;
+  height: 240px;
+}
+
 .gray-container {
   background-color: #1b1b1b;
 }
@@ -57,13 +63,13 @@ header h1 {
   margin-left: 10px;
   box-sizing: border-box;
   width: 55px !important;
-  height:55px;
+  height: 55px;
   border-radius: 50%;
   border-style: solid;
   border-width: 2.5px;
   border-color: #fff200;
   image-rendering: optimizeSpeed;
-  object-fit:fill;
+  object-fit: fill;
 }
 
 .add-comment {
@@ -111,9 +117,9 @@ header h1 {
 }
 
 .cover {
-  background-image: url(https://picsum.photos/id/2/1500/800);
   background-size: cover;
-  background-repeat: no-repeat
+  background-repeat: no-repeat;
+  object-fit: cover;
 }
 
 @media only screen and (max-width: 768px) {
@@ -151,3 +157,56 @@ header h1 {
   border-style: solid !important;
   border-color: #fff200 !important;
 }
+
+.fit {
+  object-fit: contain;
+}
+.code {
+  font-size: 0.875em;
+  word-wrap: break-word;
+}
+.bordered-r {
+  border-top-style: none;
+  border-top-width: 0px;
+
+  border-left-style: none;
+  border-left-width: 0px;
+
+  border-bottom-style: none;
+  border-bottom-width: 0px;
+
+  border-right-color: gray;
+  border-right-style: solid;
+  border-right-width: 1.5px;
+
+}
+/*
+audio::-webkit-media-controls-panel {
+  background-color: #0e0d2c;
+}
+
+audio::-webkit-media-controls-time-remaining-display {
+  color: #fff;
+}
+audio::-webkit-media-controls-play-button
+{
+  color: #fff !important;
+}
+audio::-webkit-media-controls-current-time-display {
+  color: #fff;
+}
+audio::-webkit-media-controls-mute-button {
+  background-color: #B1D4E0;
+  border-radius: 50%;
+}
+audio::-webkit-media-controls-timeline {
+  background-color: #f00;
+}
+audio::-webkit-media-controls-panel {
+border: solid #c00 1px;
+}
+input[type="range"]::-webkit-slider-thumb {
+width: 5px;
+border-radius: 5px;
+background-color: #000;
+}*/
