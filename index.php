@@ -3,6 +3,14 @@
     date_default_timezone_set('Asia/Tehran');
 
     $request = $_SERVER["REQUEST_URI"];
+    if(!empty($_GET['id']))
+    {
+        $id = $_GET['id'];
+    }
+    else
+    {
+        $id = '';
+    }
     switch ($request) {
         case("/social_network"):
         case("/social_network/"):
@@ -34,6 +42,18 @@
             
         case("/social_network/profile"):
             require __DIR__."/view/profile.php";
+            break;
+
+        case("/social_network/addComment"):
+            require __DIR__."/controller/new_comment.php";
+            break;
+            
+        case("/social_network/likePostProcess"):
+            require __DIR__."/controller/like_proccess.php";
+            break;
+
+        case("/social_network/deletePost?id=".$id):
+            require __DIR__."/controller/delete_post.php";
             break;
 
         default:
