@@ -1,5 +1,4 @@
 <?php
-
 function time2str($ts)
 {
     if(!ctype_digit($ts))

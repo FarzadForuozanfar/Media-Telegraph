@@ -16,7 +16,7 @@ if(!empty($_POST))
             if($security_password == $user['password'])
             {
                 $name = $user['name']." ". $user['last_name'];
-                $statuse = array("username"=>$user['username'], "login_statuse"=>true, "id"=>$user['id'], "name"=>$name, "profile"=>$user['image'], "gender"=>$user['gender']);
+                $statuse = array("username"=>$user['username'], "login_statuse"=>true, "id"=>$user['id'], "name"=>$name, "profile"=>$user['image'], "gender"=>$user['gender'], "cover"=>$user['cover']);
                 $_SESSION['username_login'] = $statuse;
                 header("Location:home");
             }
