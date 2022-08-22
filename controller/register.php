@@ -14,11 +14,20 @@
         $birthdate = $_POST['birthdate'];
 
         if($gender_tmp == "male")
-            $gender = 1;
+            {
+                $gender = 1;
+                $img = "view/img/male.png";
+            }
         elseif($gender_tmp == "female")
-            $gender = 0;
+           {
+                $gender = 0;
+                $img = "view/img/female.png";
+           }
         else
-            $gender = 2;
+            {
+                $gender = 2;
+                $img = "view/img/user.png";
+            }
 
         if($password1 == $password2)
         {
@@ -27,10 +36,14 @@
             
             if($user_count == 0) //unice username
             {
-                $db->query("INSERT INTO `users`(first_name , last_name, email, phone, password, username, gender, birthday) VALUES ('$firstname','$lastname','$email','$phone','$password','$username',$gender,'$birthdate')");
+
+                $img_id = rand(0,100);
+                $cover = "https://picsum.photos/id/$img_id/1200/600";
+                $db->query("INSERT INTO `users`(first_name , last_name, email, phone, password, username, gender, birthday, cover, image) VALUES ('$firstname','$lastname','$email','$phone','$password','$username',$gender,'$birthdate','$cover','$img')");
                 echo $db->error;
-                
-                //header("Location:home");
+                $user = $db->query("SELECT id FROM `users` WHERE first_name = '$firstname' AND last_name = '$lastname' AND username = '$username'")->fetch_assoc();
+                $user_id = $user['id'];
+                $db->query(("INSERT INTO follows(follower_user_id, following_user_id) VALUES ($user_id, $user_id)"));
 
             }
             else
@@ -50,14 +63,14 @@
     {
         $errors[]="Complete necessary information";
     }
-    if($errors == null)
-    {
-        header("Location: index");
-    }
-    else
+    if($errors != null)
     {
         $_SESSION['errors'] = $errors;
         header("Location: signup");
+    }
+    else
+    {
+        header("Location:index");
     }
     
 ?>
