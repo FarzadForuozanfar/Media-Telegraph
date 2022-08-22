@@ -17,5 +17,5 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <link rel="stylesheet" href="view/css/style.css">
 </head>
-<body class="bg-dark">
+<body class="bg-dark d-block">
     
