@@ -11,6 +11,7 @@
     {
         $id = '';
     }
+    
     switch ($request) {
         case("/social_network"):
         case("/social_network/"):
@@ -40,10 +41,13 @@
             require __DIR__."/controller/new_post.php";
             break;
             
-        case("/social_network/profile"):
+        case("/social_network/profile?id=".$id):
             require __DIR__."/view/profile.php";
             break;
 
+        case("/social_network/profile"):
+            require __DIR__."/view/profile.php";
+            break;    
         case("/social_network/addComment"):
             require __DIR__."/controller/new_comment.php";
             break;
@@ -54,6 +58,34 @@
 
         case("/social_network/deletePost?id=".$id):
             require __DIR__."/controller/delete_post.php";
+            break;
+
+        case("/social_network/followProccess"):
+            require __DIR__."/controller/follows_proccess.php";
+            break;
+        
+        case("/social_network/editPost"):
+            require __DIR__."/controller/editPost.php";
+            break;
+
+        case("/social_network/editprofile"):
+            require __DIR__."/view/editProfile.php";
+            break;
+
+        case("/social_network/changeProfile"):
+            require __DIR__."/controller/changeProfile.php";
+            break;
+
+        case("/social_network/editPersonalInfo"):
+            require __DIR__."/controller/editPersonalInfo.php";
+            break;
+        
+        case("/social_network/searchUser"):
+            require __DIR__."/controller/searchUser.php";
+            break;
+
+        case("/social_network/test"):
+            require __DIR__."/view/test.php";
             break;
 
         default:
