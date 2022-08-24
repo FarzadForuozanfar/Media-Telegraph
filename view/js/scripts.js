@@ -119,34 +119,29 @@ function ShowHideComments(id) {
         }
 }
 
-function Checktext(element,buttonId)
-{
-        if(element.value)
-        {
+function Checktext(element, buttonId) {
+        if (element.value) {
                 document.getElementById(buttonId).disabled = false;
         }
-        else
-        {
+        else {
                 document.getElementById(buttonId).disabled = true;
         }
 }
-// Fetch API AJAX request
-async function SendComment(postId,img,username) {
+// Fetch API AJAX comments
+async function SendComment(postId, img, username) {
 
-        let form = document.getElementById("form-comment"+postId);
+        let form = document.getElementById("form-comment" + postId);
         let formData = new FormData(form);
         let response = await fetch("addComment", {
                 method: "POST",
                 body: formData
         });
         let result = await response.text();
-        if(result)
-        {
+        if (result) {
                 console.log("Failed to add comment");
                 alert(result);
         }
-        else
-        {
+        else {
                 console.log("Comment added successfully");
                 let Comments_list = document.getElementById("comment-list" + postId);
                 let comment = `<div class="list-group-item list-group-item-action bg-gray-800 hover:bg-gray-800 text-white" aria-current="true">
@@ -156,7 +151,7 @@ async function SendComment(postId,img,username) {
                                 <a class="ms-2 cursor-pointer">${username}</a>
                         </div>
                         <span>
-                                <span class="bg-warning text-gray-50 text-xs font-small px-1 inline-flex items-center rounded dark:bg-gray-700 dark:text-gray-300">
+                                <span class="bg-warning text-gray-900 text-xs font-small px-1 inline-flex items-center rounded dark:bg-gray-700 dark:text-gray-300">
                                         <svg aria-hidden="true" class="mr-1 w-3 h-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
                                         </svg>
@@ -164,48 +159,178 @@ async function SendComment(postId,img,username) {
                                 </span>
                         </span>
                         </div>
-                        <p class="p-0">${document.getElementById("cpation"+postId).value}</p>
+                        <p class="p-0">${document.getElementById("cpation" + postId).value}</p>
                 </div>`;
-                let comment_cnt = document.getElementById("comments-count-post"+postId).innerHTML;
+                let comment_cnt = document.getElementById("comments-count-post" + postId).innerHTML;
                 comment_cnt++;
-                document.getElementById("comments-count-post"+postId).innerHTML = '';
-                document.getElementById("comments-count-post"+postId).innerHTML = comment_cnt;
+                document.getElementById("comments-count-post" + postId).innerHTML = '';
+                document.getElementById("comments-count-post" + postId).innerHTML = comment_cnt;
                 let comment_div = document.createElement('div');
                 comment_div.innerHTML += comment;
                 Comments_list.prepend(comment_div);
-                document.getElementById("cpation"+postId).value = null;
-                document.getElementById("button-"+postId).disabled = true;
+                document.getElementById("cpation" + postId).value = null;
+                document.getElementById("button-" + postId).disabled = true;
         }
 }
-// like post
-function LikePost(element,postId){
-        let like_cnt = document.getElementById("post-like-cnt-"+postId).innerHTML;
-        let form = document.getElementById("form-like-"+postId);
+//search user
+function SearchUser(button) {
+
+        const input_search = document.getElementById("search-input");
+
+        if (input_search.value != null) {
+
+                let form = document.getElementById('search-form');
+                let formData = new FormData(form);
+                fetch("searchUser", {
+                        method: "POST",
+                        body: formData
+                })
+                        .then((response) => response.text())
+                        .then(response => {
+                                let search_container = document.getElementById("search-records");
+                                search_container.innerHTML = '';
+                                const result = JSON.parse(response);
+                                if (result[0]['id'] != null) {
+                                        for (const element of result) {
+
+                                                let record = `<a href="profile?id=${element['id']}" class="flex items-center py-2 text-gray-50 hover:text-gray-900 px-1 hover:bg-gray-100 ">
+                                                                        <div class="col-6 d-flex  align-items-center">
+                                                                        <img class="mr-2 w-9 h-9 border border-3 p-0 border-warning rounded-full" src="${element['image']}" alt="${element['username']}">
+                                                                        ${element['username']}
+                                                                        </div>
+                                                                        
+                                                                </a>`
+                                                let list = document.createElement('li');
+                                                list.innerHTML = record;
+                                                search_container.appendChild(list);
+
+                                        }
+                                }
+                                else {
+                                        let record = `<p class="text-white text-center text-md">!!! not found !!!</p>`;
+                                        let list = document.createElement('li');
+                                        list.innerHTML = record;
+                                        search_container.appendChild(list);
+                                }
+
+
+                        });
+        }
+        else
+                button.setAttribute('data-dropdown-toggle', '')
+
+}
+
+function SearchUser1() {
+        let form = document.getElementById('search-form1');
+        console.log(form);
         let formData = new FormData(form);
-        fetch("likePostProcess",{
+        console.log(formData);
+        fetch("searchUser", {
                 method: "POST",
                 body: formData
-        }).then(response =>{
-                if(element.classList.contains('text-white')){
+        })
+                .then((response) => response.json())
+                .then(response => {
+                        let search_container = document.getElementById("search-records1");
+                        search_container.innerHTML = '';
+                        //const result = JSON.parse(response);
+                        console.table(response);
+                        if (result[0]['id'] != null) {
+                                for (const element of response) {
+
+                                        let record = `<a href="profile?id=${element['id']}" class="flex items-center py-2 text-gray-50 hover:text-gray-900 px-1 hover:bg-gray-100 ">
+                                                                <div class="col-6 d-flex  align-items-center">
+                                                                <img class="mr-2 w-9 h-9 border border-3 p-0 border-warning rounded-full" src="${element['image']}" alt="${element['username']}">
+                                                                ${element['username']}
+                                                                </div>
+                                                                
+                                                        </a>`
+                                        let list = document.createElement('li');
+                                        list.innerHTML = record;
+                                        search_container.appendChild(list);
+                                        console.log(element);
+                                }
+                        }
+
+                        else {
+                                let record = `<p class="text-white text-center text-md">!!! not found !!!</p>`;
+                                let list = document.createElement('li');
+                                list.innerHTML = record;
+                                search_container.appendChild(list);
+                        }
+
+                });
+
+}
+// like post
+function LikePost(element, postId) {
+        let like_cnt = document.getElementById("post-like-cnt-" + postId).innerHTML;
+        let form = document.getElementById("form-like-" + postId);
+        let formData = new FormData(form);
+        fetch("likePostProcess", {
+                method: "POST",
+                body: formData
+        }).then(response => {
+                if (element.classList.contains('text-white')) {
                         element.classList.add('text-danger');
                         element.classList.add('bi-heart-fill');
                         element.classList.remove('text-white');
                         element.classList.remove('bi-heart');
                         like_cnt++;
-                        document.getElementById("post-like-cnt-"+postId).innerHTML = '';
-                        document.getElementById("post-like-cnt-"+postId).innerHTML = like_cnt;
+                        document.getElementById("post-like-cnt-" + postId).innerHTML = '';
+                        document.getElementById("post-like-cnt-" + postId).innerHTML = like_cnt;
                 }
-                else if(element.classList.contains('text-danger')){
+                else if (element.classList.contains('text-danger')) {
                         element.classList.remove('text-danger');
                         element.classList.remove('bi-heart-fill');
                         element.classList.add('text-white');
                         element.classList.add('bi-heart');
                         like_cnt--;
-                        document.getElementById("post-like-cnt-"+postId).innerHTML = '';
-                        document.getElementById("post-like-cnt-"+postId).innerHTML = like_cnt;
+                        document.getElementById("post-like-cnt-" + postId).innerHTML = '';
+                        document.getElementById("post-like-cnt-" + postId).innerHTML = like_cnt;
                 }
-        }).catch(error =>{console.error(error);});
+        }).catch(error => { console.error(error); });
 }
+// follow unfollow
+function FollowsProccess(button_id, postId) {
+        let form = document.getElementById("form-follows-" + postId);
+
+        let formData = new FormData(form);
+        fetch("followProccess", {
+                method: "POST",
+                body: formData
+        }).then(response => {
+
+                let statuse = button_id.innerHTML;
+                button_id.innerHTML = '';
+
+                if (statuse == 'Unfollow') {
+                        button_id.innerHTML = 'Follow';
+                        button_id.classList.remove('text-yellow-400');
+                        button_id.classList.add('text-gray-900');
+                        button_id.classList.remove('btn');
+                        button_id.classList.remove('btn-outline-warning');
+                        button_id.classList.add('bg-yellow');
+                        button_id.classList.remove('hover:bg-yellow');
+
+                }
+                else {
+                        button_id.innerHTML = 'Unfollow';
+                        button_id.classList.add('text-yellow-400');
+                        button_id.classList.remove('text-gray-900');
+                        button_id.classList.add('btn');
+                        button_id.classList.add('btn-outline-warning');
+                        button_id.classList.remove('bg-yellow');
+                        button_id.classList.add('hover:bg-yellow');
+                }
+
+
+
+
+        }).catch(error => { console.error(error); });
+}
+
 // error handling
 var objCal1 = new AMIB.persianCalendar('pcal1',
         { extraInputID: "extra", extraInputFormat: "YYYYMMDD" }
