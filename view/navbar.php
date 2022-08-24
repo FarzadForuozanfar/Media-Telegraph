@@ -1,7 +1,9 @@
 <?php
 if (session_status() === PHP_SESSION_NONE) {
-  session_start();
+    session_start();
 }
+elseif ((empty($_SESSION['username_login']['login_statuse'])))
+header("Location:index");
 ?>
 <nav class="navbar-dark bg-dark border border-top-0 border-start-0 border-end-0 border-gray-200 px-2 sm:px-4 py-2.5 rounded ">
   <div class="container flex flex-wrap justify-between items-center mx-auto">
@@ -57,7 +59,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <div class="hidden justify-between items-center w-full md:flex md:w-auto md:order-1" id="mobile-menu-2">
 
       <ul class="flex wrapper p-1 mt-1 rounded-lg md:flex-row md:space-x-8 text-white">
-        <li>
+        <li class="me-1">
           <a href="home" data-tooltip-target="tooltip-home" class="block py-2 pr-4 pl-3 list-menu hover:text-yellow-300">
             <i class="bi bi-house fa-lg" aria-hidden="true"></i>
             <div id="tooltip-home" role="tooltip" class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
@@ -66,8 +68,8 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
           </a>
         </li>
-        <li>
-          <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="block py-2 pr-4 pl-3 list-menu hover:text-yellow-300">
+        <li class="me-1">
+          <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="block py-2 pr-4 pl-3 list-menu hover:text-yellow-300">
             <i data-tooltip-target="tooltip-post" class="bi bi-plus-square-fill fa-lg">
               <div id="tooltip-post" role="tooltip" class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
                 New Post
@@ -85,7 +87,7 @@ if (session_status() === PHP_SESSION_NONE) {
                 </div>
 
                 <div class="modal-body">
-                  <form action="newPost" id="add-new-post" method="post">
+                  <form action="newPost" enctype="multipart/form-data" id="add-new-post" method="post">
                     <div class="mb-3">
                       <label for="exampleFormControlTextarea1" class="form-label">Caption :</label>
                       <textarea placeholder="what is going on in your mind . . ." name="caption1" required class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
@@ -114,37 +116,53 @@ if (session_status() === PHP_SESSION_NONE) {
           </div>
         </li>
 
-        <li>
-          <a href="#" data-tooltip-target="tooltip-activity" class="block py-2 pr-4 pl-3 list-menu hover:text-yellow-300">
-            <i class="bi bi-heart-fill fa-lg position-relative"></i>
-            <div id="tooltip-activity" role="tooltip" class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-              Activity
-              <div class="tooltip-arrow" data-popper-arrow></div>
+        <li class="me-1">
+          <button data-tooltip-target="tooltip-activity" id="dropdownNotificationButton" data-dropdown-toggle="dropdownNotification" class="inline-flex items-center text-md font-medium text-center py-2 pr-4 pl-3 list-menu hover:text-yellow-300" type="button">
+            <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z"></path>
+            </svg>
+            <div class="flex relative">
+              <div class="inline-flex relative -top-2 right-3 w-3 h-3 bg-red-500 rounded-full border-2 border-white dark:border-gray-900"></div>
             </div>
-          </a>
+          </button>
+          <div id="tooltip-activity" role="tooltip" class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+            Notifications
+            <div class="tooltip-arrow" data-popper-arrow></div>
+          </div>
+
         </li>
-        <li class="">
-          <a href="#" data-tooltip-target="tooltip-requests" class="block py-2 pr-4 pl-3 list-menu hover:text-yellow-300">
-            <i class="bi bi-people-fill fa-lg position-relative"></i>
-            <div id="tooltip-requests" role="tooltip" class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-              Requests
+        <li class="m-0">
+          <a href="#" data-tooltip-target="tooltip-Messanger" class="block py-2 pr-4 pl-3 list-menu hover:text-yellow-300">
+            <i class="bi bi-send-exclamation-fill fa-lg position-relative"></i>
+            <div id="tooltip-Messanger" role="tooltip" class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
+              Messanger
               <div class="tooltip-arrow" data-popper-arrow></div>
             </div>
           </a>
         </li>
         <li class="input-group d-none d-md-block d-lg-block d-xl-block d-xxl-block">
-          <form class="d-flex me-5" role="search">
+          <form id="search-form" class="d-flex me-5" role="search">
             <div class="input-group">
-              <input type="text" style="border-top-left-radius: 15px; border-bottom-left-radius: 15px;" class="form-control" placeholder="# Explore" aria-label="Recipient's username" aria-describedby="button-addon2">
-              <button class="btn btn-outline-light bi bi-search" type="button" id="button-addon2"></button>
+              <input onchange="Checktext(this,'dropdownUsersButton')" type="text"name="search-input" id="search-input" type="search" style="border-top-left-radius: 15px; border-bottom-left-radius: 15px;" class="form-control" placeholder="# Explore" aria-label="Recipient's username" aria-describedby="button-addon2">
+              <button disabled onclick="SearchUser()" id="dropdownUsersButton" data-dropdown-toggle="dropdownUsers" data-dropdown-placement="bottom" class="btn btn-outline-light bi bi-search" type="button" id="button-addon2"></button>
+              <div id="dropdownUsers" class="hidden z-10 w-72 bg-dark rounded shadow dark:bg-gray-700">
+                <ul id="search-records" class="overflow-y-auto py-1 h-32 scrollbar text-gray-700 dark:text-gray-200" aria-labelledby="dropdownUsersButton">
+
+                </ul>
+              </div>
             </div>
           </form>
         </li>
       </ul>
-      <form class="display-none me-5" role="search">
+      <form id="search-form1" class="display-none me-5" role="search">
         <div class="input-group d-block-sm d-block-xs">
-          <input type="text" style="border-top-left-radius: 15px; border-bottom-left-radius: 15px;" class="form-control" placeholder="# Explore" aria-label="Recipient's username" aria-describedby="button-addon2">
-          <button class="btn btn-outline-light bi bi-search" type="button" id="button-addon2"></button>
+          <input name="search-input" type="text" style="border-top-left-radius: 15px; border-bottom-left-radius: 15px;" class="form-control" placeholder="# Explore" aria-describedby="button-addon">
+          <button onclick="SearchUser1()" id="dropdownUsersButton1" data-dropdown-toggle="dropdownUsers1" data-dropdown-placement="bottom" class="btn btn-outline-light bi bi-search" type="button" id="button-addon"></button>
+          <div id="dropdownUsers1" class="hidden z-10 w-72 bg-dark rounded shadow dark:bg-gray-700">
+            <ul id="search-records1" class="overflow-y-auto py-1 h-32 scrollbar text-gray-700 dark:text-gray-200" aria-labelledby="dropdownUsersButton1">
+
+            </ul>
+          </div>
         </div>
       </form>
     </div>

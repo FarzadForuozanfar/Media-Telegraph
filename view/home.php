@@ -1,16 +1,17 @@
-<?php
-if (empty($_SESSION['username_login']))
-    header("Location:index");
+<?php include "controller/check_status.php";
+
 ?>
-<?php if ($_SESSION['username_login']['login_statuse'] == true) : ?>
     <?php
     include 'header.php';
     include 'navbar.php';
     include 'model/database.php';
     include 'controller/functions.php';
     include 'controller/CheckLike_function.php';
+    include 'controller/calculate_fallows.php';
     $post_array = array();
+    $_SESSION['username_login']['location'] = "home";
     $user_id = $_SESSION['username_login']['id'];
+    $user_login_follows = Calculate($user_id);
     $user = $db->query("SELECT * FROM users WHERE id = $user_id")->fetch_assoc();
     $posts = $db->query("SELECT * , users.id AS id_user, posts.id AS id_post, follows.id AS id_follows FROM users INNER JOIN posts ON posts.user_id = users.id inner JOIN follows on user_id = following_user_id WHERE follows.follower_user_id = $user_id ORDER BY time DESC");
     foreach ($posts as $post) {
@@ -33,8 +34,8 @@ if (empty($_SESSION['username_login']))
                     <div class="card-body rounded-top d-block justify-content-center">
                         <div class="d-flex justify-content-between align-items-center">
                             <span class="text-center">
-                                <h5>555</h5>
-                                <small>Followes</small>
+                                <h5><?php echo $user_login_follows['follower'];?></h5>
+                                <small>Follower</small>
                             </span>
                             <img loading="lazy" class="profile-container rounded-circle" style="width: 90px !important; height: 90px !important;" src="<?php
                                                                                                                                                         if (!empty($_SESSION['username_login']['profile'])) {
@@ -46,7 +47,7 @@ if (empty($_SESSION['username_login']))
                                                                                                                                                         }
                                                                                                                                                         ?>" alt="">
                             <span class="text-center">
-                                <h5>111</h5>
+                                <h5><?php echo $user_login_follows['following'];?></h5>
                                 <small>Following</small>
                             </span>
                         </div>
@@ -125,6 +126,7 @@ if (empty($_SESSION['username_login']))
 
                     </div>
                     <?php foreach ($post_array as $post) : ?>
+                        <?php $user_follows = Calculate($post['id_user']) ;?>
                         <div class="col-12 mb-3 rounded-4">
                             <div class="card rounded-4 p-3 gray-container rounded-4">
                                 <div class="card-header rounded-top p-0 d-flex text-light">
@@ -152,7 +154,11 @@ if (empty($_SESSION['username_login']))
                                                             </a>
                                                             <?php if ($_SESSION['username_login']['id'] != $post['id_user']) : ?>
                                                                 <div>
-                                                                    <button type="button" class="text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-3 py-1.5 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Follow</button>
+                                                                    <form id="form-follows-<?php echo $post['id_user']; ?>">
+                                                                        <button onclick="FollowsProccess(this,<?php echo $post['id_user'] ?>)" type="button" class="text-yellow-400 btn btn-outline-warning hover:bg-yellow hover:text-gray-900 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5">Unfollow</button>
+                                                                        <input type="hidden" name="following_id" value="<?php echo $post['id_user']; ?>">
+                                                                        <input type="hidden" name="follower_id" value="<?php echo $_SESSION['username_login']['id']; ?>">
+                                                                    </form>
                                                                 </div>
                                                             <?php endif; ?>
                                                         </div>
@@ -160,20 +166,20 @@ if (empty($_SESSION['username_login']))
                                                             <span><?php echo $post['first_name'] . " " . $post['last_name']; ?></span>
                                                         </p>
                                                         <p class="mb-3 text-sm font-normal">
-                                                            <a href="#" class="hover:underline">@<?php echo $post['username']; ?></a>
+                                                            <a href="profile?id=<?php echo $post['id_user']; ?>" class="hover:underline">@<?php echo $post['username']; ?></a>
                                                         </p>
                                                         <p class="mb-4 text-sm font-light"><?php echo $post['bio'] ?></p>
                                                         <ul class="flex text-sm font-light">
                                                             <li class="mr-2">
                                                                 <a href="#" class="hover:underline">
-                                                                    <span class="font-semibold text-gray-50 dark:text-white">799</span>
+                                                                    <span class="font-semibold text-gray-50 dark:text-white"><?php echo $user_follows['following'] ;?></span>
                                                                     <spa>Following
                                                                     </spa>
                                                                 </a>
                                                             </li>
                                                             <li>
                                                                 <a href="#" class="hover:underline">
-                                                                    <span class="font-semibold text-gray-50 dark:text-white">3,758</span>
+                                                                    <span class="font-semibold text-gray-50 dark:text-white"><?php echo $user_follows['follower'] ;?></span>
                                                                     <span>Followers</span>
                                                                 </a>
                                                             </li>
@@ -270,14 +276,16 @@ if (empty($_SESSION['username_login']))
                                             </div>
                                             <!-- Modal body -->
                                             <div class="p-6 space-y-6">
-
-                                                <label for="caption" class="block mb-2 text-md font-medium text-white dark:text-gray-400">Caption :</label>
-                                                <textarea id="caption" rows="4" class="m-0 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "><?php echo $post['caption']; ?></textarea>
-
+                                                <form id="edit-post<?php echo $post['id_post']; ?>" action="editPost" method="post">
+                                                    <label for="caption" class="block mb-2 text-md font-medium text-white dark:text-gray-400">Caption :</label>
+                                                    <textarea required name="caption" id="caption<?php echo $post['id_post']; ?>" rows="4" class="m-0 p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "><?php echo $post['caption']; ?></textarea>
+                                                    <input type="hidden" name="post_id" value="<?php echo $post['id_post']; ?>"> 
+                                                    <input type="hidden" name="location" value="home">
+                                                </form>
                                             </div>
                                             <!-- Modal footer -->
                                             <div class="d-flex justify-content-between px-3 py-2 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
-                                                <button data-modal-toggle="small-modal<?php echo $post['id_post']; ?>" type="button" class="text-dark bg-yellow hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center ">Save</button>
+                                                <button form="edit-post<?php echo $post['id_post']; ?>" data-modal-toggle="small-modal<?php echo $post['id_post']; ?>" type="submit" class="text-dark bg-yellow hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center ">Save</button>
                                                 <button data-modal-toggle="small-modal<?php echo $post['id_post']; ?>" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-2 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Cancel</button>
                                             </div>
                                         </div>
@@ -299,9 +307,11 @@ if (empty($_SESSION['username_login']))
                                                     <?php endif; ?>
                                                     </div>
                                                 <?php endif; ?>
-                                                <p class="mt-3 text-light">
+                                                <br>
+                                                <b class="mt-3 text-light">
                                                     <?php echo $post['caption']; ?>
-                                                </p>
+                                                </b>
+                                                <br>
                                                 <br>
                                                 <hr>
 
@@ -358,7 +368,7 @@ if (empty($_SESSION['username_login']))
                                                                                 <a class="ms-2 cursor-pointer"><?php echo $comment['first_name'] . " " . $comment['last_name']; ?></a>
                                                                             </div>
                                                                             <span>
-                                                                                <span class="bg-warning text-gray-50 text-xs font-small px-1 inline-flex items-center rounded dark:bg-gray-700 dark:text-gray-300">
+                                                                                <span class="bg-warning text-gray-900 text-xs font-small px-1 inline-flex items-center rounded dark:bg-gray-700 dark:text-gray-300">
                                                                                     <svg aria-hidden="true" class="mr-1 w-3 h-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
                                                                                     </svg>
@@ -373,9 +383,10 @@ if (empty($_SESSION['username_login']))
                                                         </div>
                                                     </div>
                                                 </div>
-                                                </div>
                                             </div>
-                                </div>
+                                        </div>
+                                    </div>
+                                <?php unset($user_follows) ;?>
                             <?php endforeach; ?>
 
                             </div>
@@ -499,5 +510,5 @@ if (empty($_SESSION['username_login']))
                         </div>
                 </div>
             </div>
-        <?php endif; ?>
+        
         <?php include 'footer.php'; ?>

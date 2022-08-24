@@ -1,5 +1,5 @@
 <?php include 'header.php'; ?>
-<div class="container mt-5">
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-4 col-md-6 col-12">
             <?php if (!empty($_SESSION['error'])) : ?>
@@ -23,7 +23,7 @@
         </div>
     </div>
     <?php
-        $_SESSION['error'] = null;
+        $_SESSION = null;
         session_destroy();
 
     ?>
