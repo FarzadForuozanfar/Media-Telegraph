@@ -3,10 +3,18 @@
     {
         $caption = $_POST['caption'];
         $post_id = $_POST['post_id'];
-
+        $location = $_POST['location'];
         include 'model/database.php';
         $db->query("UPDATE `posts` SET caption = '$caption' WHERE id = $post_id ");
         echo $db->error;
-        header("Location: home");
+        if($location == 'home')
+        {
+            header("Location: home");
+        }
+        elseif($location == 'profile')
+        {
+            header("Location: profile");
+        }
     }
 ?>
+

@@ -37,7 +37,7 @@
             if($user_count == 0) //unice username
             {
 
-                $img_id = rand(0,100);
+                $img_id = rand(0,60);
                 $cover = "https://picsum.photos/id/$img_id/1200/600";
                 $db->query("INSERT INTO `users`(first_name , last_name, email, phone, password, username, gender, birthday, cover, image) VALUES ('$firstname','$lastname','$email','$phone','$password','$username',$gender,'$birthdate','$cover','$img')");
                 echo $db->error;

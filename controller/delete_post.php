@@ -13,6 +13,9 @@
         }
 
     }
-    header("Location:home");
+    if($_SESSION['username_login']['location'] == "home")
+        header("Location:home");
+    else
+    header("Location:profile");
 
 ?>
