@@ -192,14 +192,46 @@ function SearchUser(button) {
                                 const result = JSON.parse(response);
                                 if (result[0]['id'] != null) {
                                         for (const element of result) {
+                                                let btn_follow;
+                                                if (!element['me']) {
+                                                        if (element['follows'] == 1) {
+                                                                btn_follow = `
+                                                                <div class ="col-5 d-flex justify-content-end px-1">
+                                                                        <form id="form-follows-${element['id']}">
+                                                                                <button onclick="FollowsProccess(this,${element['id']})" type="button" class="text-yellow-400 btn btn-outline-warning hover:bg-yellow hover:text-gray-900 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5">
+                                                                                        Unfollow
+                                                                                </button>
+                                                                                <input type="hidden" name="following_id" value="${element['id']}">
+                                                                                <input type="hidden" name="follower_id" value="${element['my_id']}">
+                                                                        </form>
+                                                                </div>`
+                                                        }
+                                                        else {
+                                                                btn_follow = `
+                                                                <div class ="col-5 d-flex justify-content-end px-1">
+                                                                        <form id="form-follows-${element['id']}">
+                                                                                <button onclick="FollowsProccess(this,${element['id']})" type="button" class="text-gray-900 bg-yellow hover:bg-yellow hover:text-gray-900 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5">
+                                                                                        Follow
+                                                                                </button>
+                                                                                <input type="hidden" name="following_id" value="${element['id']}">
+                                                                                <input type="hidden" name="follower_id" value="${element['my_id']}">
+                                                                        </form>
+                                                                </div>`
 
-                                                let record = `<a href="profile?id=${element['id']}" class="flex items-center py-2 text-gray-50 hover:text-gray-900 px-1 hover:bg-gray-100 ">
-                                                                        <div class="col-6 d-flex  align-items-center">
-                                                                        <img class="mr-2 w-9 h-9 border border-3 p-0 border-warning rounded-full" src="${element['image']}" alt="${element['username']}">
-                                                                        ${element['username']}
+                                                        }
+                                                }
+                                                else {
+                                                        btn_follow = ``;
+                                                }
+                                                let record = `<div class="col-12 d-flex hover:bg-gray-800 align-items-center">
+                                                                        <div class="col-7 text-gray-50">
+                                                                                <a href="profile?id=${element['id']}" class="flex items-center py-2 px-1">
+                                                                                <img class="mr-2 w-9 h-9 border border-3 p-0 border-warning rounded-full" src="${element['image']}" alt="${element['username']}">
+                                                                                ${element['username']}
+                                                                                </a>
                                                                         </div>
-                                                                        
-                                                                </a>`
+                                                                        ${btn_follow}
+                                                               </div>`;
                                                 let list = document.createElement('li');
                                                 list.innerHTML = record;
                                                 search_container.appendChild(list);
@@ -223,9 +255,7 @@ function SearchUser(button) {
 
 function SearchUser1() {
         let form = document.getElementById('search-form1');
-        console.log(form);
         let formData = new FormData(form);
-        console.log(formData);
         fetch("searchUser", {
                 method: "POST",
                 body: formData
@@ -234,22 +264,51 @@ function SearchUser1() {
                 .then(response => {
                         let search_container = document.getElementById("search-records1");
                         search_container.innerHTML = '';
-                        //const result = JSON.parse(response);
-                        console.table(response);
-                        if (result[0]['id'] != null) {
+                        if (response[0]['id'] != null) {
                                 for (const element of response) {
+                                        let btn_follow;
+                                        if (!element['me']) {
+                                                if (element['follows'] == 1) {
+                                                        btn_follow = `
+                                                                <div class ="col-5 d-flex justify-content-end px-1">
+                                                                        <form id="form-follows-${element['id']}">
+                                                                                <button onclick="FollowsProccess(this,${element['id']})" type="button" class="text-yellow-400 btn btn-outline-warning hover:bg-yellow hover:text-gray-900 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5">
+                                                                                        Unfollow
+                                                                                </button>
+                                                                                <input type="hidden" name="following_id" value="${element['id']}">
+                                                                                <input type="hidden" name="follower_id" value="${element['my_id']}">
+                                                                        </form>
+                                                                </div>`
+                                                }
+                                                else {
+                                                        btn_follow = `
+                                                                <div class ="col-5 d-flex justify-content-end px-1">
+                                                                        <form id="form-follows-${element['id']}">
+                                                                                <button onclick="FollowsProccess(this,${element['id']})" type="button" class="text-gray-900 bg-yellow hover:bg-yellow hover:text-gray-900 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5">
+                                                                                        Follow
+                                                                                </button>
+                                                                                <input type="hidden" name="following_id" value="${element['id']}">
+                                                                                <input type="hidden" name="follower_id" value="${element['my_id']}">
+                                                                        </form>
+                                                                </div>`
 
-                                        let record = `<a href="profile?id=${element['id']}" class="flex items-center py-2 text-gray-50 hover:text-gray-900 px-1 hover:bg-gray-100 ">
-                                                                <div class="col-6 d-flex  align-items-center">
-                                                                <img class="mr-2 w-9 h-9 border border-3 p-0 border-warning rounded-full" src="${element['image']}" alt="${element['username']}">
-                                                                ${element['username']}
+                                                }
+                                        }
+                                        else {
+                                                btn_follow = ``;
+                                        }
+                                        let record = `<div class="col-12 d-flex hover:bg-gray-800 align-items-center">
+                                                                <div class="col-7 text-gray-50">
+                                                                        <a href="profile?id=${element['id']}" class="flex items-center py-2 px-1">
+                                                                        <img class="mr-2 w-9 h-9 border border-3 p-0 border-warning rounded-full" src="${element['image']}" alt="${element['username']}">
+                                                                        ${element['username']}
+                                                                        </a>
                                                                 </div>
-                                                                
-                                                        </a>`
+                                                                ${btn_follow}
+                                                        </div>`;
                                         let list = document.createElement('li');
                                         list.innerHTML = record;
                                         search_container.appendChild(list);
-                                        console.log(element);
                                 }
                         }
 
@@ -324,10 +383,7 @@ function FollowsProccess(button_id, postId) {
                         button_id.classList.remove('bg-yellow');
                         button_id.classList.add('hover:bg-yellow');
                 }
-
-
-
-
+                
         }).catch(error => { console.error(error); });
 }
 
