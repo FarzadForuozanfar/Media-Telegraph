@@ -7,6 +7,9 @@ include 'model/database.php';
 include 'controller/functions.php';
 include  'controller/calculate_fallows.php';
 include 'controller/CheckLike_function.php';
+include 'controller/send_follows.php';
+include 'controller/send_likes.php';
+
 if (!empty($_GET['id'])) {
     $user_id = $_GET['id'];
     $user_login_id = $_SESSION['username_login']['id'];
@@ -17,14 +20,14 @@ if (!empty($_GET['id'])) {
 $user_login_follows = Calculate($user_id);
 $post_count = $db->query("SELECT COUNT(*) AS cnt FROM posts WHERE user_id = $user_id")->fetch_assoc();
 $user = $db->query("SELECT * FROM users WHERE id = $user_id")->fetch_assoc();
-$posts = $db->query("SELECT * FROM posts WHERE user_id = $user_id ORDER BY time DESC");
+$posts = $db->query("SELECT *,posts.id AS id_post, posts.user_id AS id_user FROM posts WHERE user_id = $user_id ORDER BY time DESC");
 
 $post_array = array();
 
 foreach ($posts as $post) {
     $post_id = $post['id'];
     $post['likes'] = $db->query("SELECT COUNT(*) AS cnt FROM likes WHERE post_id = $post_id")->fetch_assoc();
-    $post['comments'] = $db->query("SELECT * FROM comments INNER JOIN users ON comments.user_id = users.id WHERE post_id = $post_id ORDER BY time DESC");
+    $post['comments'] = $db->query("SELECT *, users.id AS id_user FROM comments INNER JOIN users ON comments.user_id = users.id WHERE post_id = $post_id ORDER BY time DESC");
     $post['comments_count'] = $db->query("SELECT COUNT(*) AS comments_count FROM comments WHERE post_id = $post_id")->fetch_assoc();
     $post_array[] = $post;
 }
@@ -60,17 +63,20 @@ $_SESSION['username_login']['location'] = "profile";
                     </div>
                 </div>
             </div>
+            <?php $id_user = $_SESSION['username_login']['id'] ?>
             <div class="bg-gray-300 py-3 px-1 d-flex justify-content-end text-center">
                 <ul class="list-inline mb-0">
                     <li class="list-inline-item">
                         <h5 class="font-weight-bold mb-0 d-block"><?php echo $post_count['cnt']; ?></h5>
                         <small class="text-muted"> <i class="bi bi-camera-fill mr-1"></i>Post</small>
                     </li>
-                    <li class="list-inline-item">
+                    <li class="list-inline-item cursor-pointer" <?php if($user_login_follows['follower'] > 0)
+                                    echo "data-bs-toggle='modal' data-bs-target='#follower-modal$user_id'"?>>
                         <h5 class="font-weight-bold mb-0 d-block"><?php echo $user_login_follows['follower']; ?></h5>
                         <small class="text-muted"> <i class="fa-solid fa-users mr-1"></i>Followers</small>
                     </li>
-                    <li class="list-inline-item">
+                    <li class="list-inline-item cursor-pointer" <?php if($user_login_follows['following'] > 0)
+                                    echo "data-bs-toggle='modal' data-bs-target='#following-modal$user_id'"?>>
                         <h5 class="font-weight-bold mb-0 d-block"><?php echo $user_login_follows['following']; ?></h5>
                         <small class="text-muted"> <i class="bi bi-person-hearts mr-1"></i>Following</small>
                     </li>
@@ -91,6 +97,7 @@ $_SESSION['username_login']['location'] = "profile";
                 </div>
                 <div class="row px-4">
                     <?php foreach ($post_array as $post) : ?>
+                        <?php include "view/likes_list.php"; ?>
                         <div class="col-lg-4 col-md-6">
                             <div data-modal-toggle="defaultModal<?php echo $post['id']; ?>" style="height:96%;" class="border w-fill border-4 rounded-3 px-0 my-3 shadow-md cursor-pointer">
                                 <?php if ($post['media']) : ?>
@@ -216,7 +223,7 @@ $_SESSION['username_login']['location'] = "profile";
                                                 </div>
                                             </div>
 
-                                            <div id="comment-list<?php echo $post['id']; ?>" class="list-group overflow-y-auto h-64 scrollbar">
+                                            <div id="comment-list<?php echo $post['id']; ?>" class="list-group overflow-y-auto h-64 m-1 p-1 scrollbar">
                                                 <?php foreach ($post['comments'] as $comment) : ?>
                                                     <div class="list-group-item list-group-item-action bg-gray-800 hover:bg-gray-800 text-white" aria-current="true">
                                                         <div class="d-flex w-100 justify-content-between">
@@ -229,7 +236,7 @@ $_SESSION['username_login']['location'] = "profile";
                                                                                                                     } else {
                                                                                                                         echo "view/img/female.png";
                                                                                                                     } ?>" alt="">
-                                                                <a class="ms-2 cursor-pointer"><?php echo $comment['first_name'] . " " . $comment['last_name']; ?></a>
+                                                                <a href="profile?id=<?php echo $comment['id_user'] ?>"class="ms-2 cursor-pointer"><?php echo $comment['first_name'] . " " . $comment['last_name']; ?></a>
                                                             </div>
                                                             <span>
                                                                 <span class="bg-warning text-gray-900 text-xs font-small px-1 inline-flex items-center rounded dark:bg-gray-700 dark:text-gray-300">
@@ -260,10 +267,10 @@ $_SESSION['username_login']['location'] = "profile";
                                                     <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>">
                                                     <input type="hidden" name="user_id" value="<?php echo $_SESSION['username_login']['id']; ?>">
                                                 </form>
-                                                <small id="post-like-cnt-<?php echo $post['id']; ?>" class="text-lg text-light"><?php if ($post['likes']['cnt']) {
+                                                <b data-bs-toggle='modal' data-bs-target='#likes-modal<?php echo $post['id']; ?>' id="post-like-cnt-<?php echo $post['id']; ?>" class="text-lg text-light"><?php if ($post['likes']['cnt']) {
                                                                                                                                     echo $post['likes']['cnt'];
                                                                                                                                 } ?>
-                                                </small>
+                                                </b>
                                             </span>
                                         </div>
                                     </div>
@@ -347,7 +354,7 @@ $_SESSION['username_login']['location'] = "profile";
                 </div>
             </div>
         </div>
-
+        <?php include "view/follows_list.php"; ?>                                                
     </div>
 
     <?php include 'footer.php'; ?>
