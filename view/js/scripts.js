@@ -386,22 +386,15 @@ function FollowsProccess(button_id, postId) {
                 
         }).catch(error => { console.error(error); });
 }
+function DeleteStory(story_id){
+        let form = document.getElementById('story_id-'+story_id);
+        let formData = new FormData(form);
 
-// error handling
-var objCal1 = new AMIB.persianCalendar('pcal1',
-        { extraInputID: "extra", extraInputFormat: "YYYYMMDD" }
-);
-
-let calendar_btn = document.getElementsByClassName("pcalBtn");
-calendar_btn[0].setAttribute("id", "para-1");
-var elem = document.createElement("img");
-elem.setAttribute("src", "view/img/icon.png");
-elem.setAttribute("height", "38");
-elem.setAttribute("width", "38");
-elem.setAttribute("alt", "calendar-icon");
-calendar_btn[0].appendChild(elem);
-let calendar = document.getElementById("calendar");
-calendar.appendChild(calendar_btn[0]);
-
-
-
+        fetch("deleteStory", {
+                method: "post",
+                body: formData      
+        }).then(response =>{
+                let story_container = document.getElementById("story-"+story_id);
+                story_container.innerHTML = '';
+        }).catch(err => console.error(err));
+}
