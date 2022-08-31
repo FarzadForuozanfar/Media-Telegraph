@@ -1,8 +1,9 @@
 <?php 
-
+    
     function GetFollows($user_id, $follow_status)
     {
         include "model/database.php";
+        $login_user_id = $_SESSION['username_login']['id'];
         if($follow_status == "follower")
         {
             $follows = $db->query("SELECT * ,users.id AS id_user 
@@ -15,16 +16,22 @@
                 $image = $follow['image'];
                 $username = $follow['username'];
                 $id = $follow['id_user'];
-                if($db->query("SELECT * FROM `follows` WHERE follower_user_id = $user_id AND following_user_id = $id")->num_rows > 0)
+                if($id != $_SESSION['username_login']['id'])
+                {
+                    if($db->query("SELECT * FROM `follows` WHERE follower_user_id = $login_user_id AND following_user_id = $id")->num_rows > 0)
                     {
                         $button = "<button onclick='FollowsProccess(this,$id)' type='button' class='text-yellow-400 btn btn-outline-warning hover:bg-yellow hover:text-gray-900 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5'>Unfollow</button>";
                     }
-                else
+                    else
                     {
                         $button = "<button onclick='FollowsProccess(this,$id)' type='button' class='text-gray-900 bg-yellow hover:bg-yellow hover:text-gray-900 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5'>
                                         Follow
                                     </button>";
                     }
+                
+                }
+                else
+                    $button = '';
                 echo 
                     "<div class='col-12 d-flex hover:bg-gray-800 align-items-center'>
                         <div class='col-7 text-gray-50'>
@@ -37,7 +44,7 @@
                             <form id='form-follows-$id'>
                                 $button
                                 <input type='hidden' name='following_id' value='$id'>
-                                <input type='hidden' name='follower_id' value='$user_id'>
+                                <input type='hidden' name='follower_id' value='$login_user_id'>
                             </form>
                         </div>
                     </div>";
@@ -55,6 +62,23 @@
                 $image = $follow['image'];
                 $username = $follow['username'];
                 $id = $follow['id_user'];
+                if($id != $_SESSION['username_login']['id'])
+                {
+                    if($db->query("SELECT * FROM `follows` WHERE follower_user_id = $login_user_id AND following_user_id = $id")->num_rows > 0)
+                    {
+                            $button = "<button onclick='FollowsProccess(this,$id)' type='button' class='text-yellow-400 btn btn-outline-warning hover:bg-yellow hover:text-gray-900 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5'>Unfollow</button>";
+                    }
+                    else
+                    {
+                        $button = "<button onclick='FollowsProccess(this,$id)' type='button' class='text-gray-900 bg-yellow hover:bg-yellow hover:text-gray-900 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5'>
+                                        Follow
+                                    </button>";
+                    }
+                
+                }
+                else
+                    $button = '';
+                
                 echo 
                     "<div class='col-12 d-flex hover:bg-gray-800 align-items-center'>
                         <div class='col-7 text-gray-50'>
@@ -65,9 +89,9 @@
                         </div>
                         <div class ='col-5 d-flex justify-content-end px-1'>
                             <form id='form-follows-$id'>
-                                <button onclick='FollowsProccess(this,$id)' type='button' class='text-yellow-400 btn btn-outline-warning hover:bg-yellow hover:text-gray-900 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-xs px-3 py-1.5'>Unfollow</button>
+                                $button
                                 <input type='hidden' name='following_id' value='$id'>
-                                <input type='hidden' name='follower_id' value='$user_id'>
+                                <input type='hidden' name='follower_id' value='$login_user_id'>
                             </form>
                         </div>
                     </div>";

@@ -2,7 +2,20 @@
 if(!empty($_POST))
 {
     include 'model/database.php';
-    
+    include 'controller/CheckStoryAvailable.php';
+    $stories = $db->query("SELECT * FROM story");
+    foreach($stories as $story)
+    {
+        $expired = Check($story['time']);
+        if($expired)
+        {
+            if($story['media'])
+                unlink($story['media']);
+            $id = $story['id'];
+            $db->query("DELETE FROM story WHERE id = $id");
+
+        }
+    }
     $username = $_POST['username'];
     $password = $_POST['password'];
 

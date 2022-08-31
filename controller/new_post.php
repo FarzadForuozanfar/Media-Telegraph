@@ -4,54 +4,7 @@ include 'model/database.php';
 $date = date('Y-m-d H:i:s');
 $date = str_replace(':', '-', $date);
 $user_id = $_SESSION['username_login']['id'];
-
-if (!empty($_POST['caption2'])) {
-    $caption = $_POST['caption2'];
-    if(!empty($_FILES['photoUpload']['name']))
-    {
-        $file = $_FILES['photoUpload'];
-        $type = explode('/', $file['type']);
-
-        if ($type[0] == 'image')
-        {
-            $file_path = "view/media/images/" . $date . $_FILES['photoUpload']['name'];
-        }
-    }
-    elseif(!empty($_FILES['videoUpload']['name']))
-    {
-        $file = $_FILES['videoUpload'];
-        $type = explode('/', $file['type']);
-
-        if ($type[0] == 'video')
-        {
-            $file_path = "view/media/videos/" . $date . $_FILES['videoUpload']['name'];
-        }
-    }
-    elseif(!empty($_FILES['audioUpload']['name']))
-    {
-        $file = $_FILES['audioUpload'];
-        $type = explode('/', $file['type']);
-
-        if ($type[0] == 'audio')
-        {
-            $file_path = "view/media/audios/" . $date . $_FILES['audioUpload']['name'];
-        }
-    }
-    if($file_path)
-    {
-        move_uploaded_file($file['tmp_name'], $file_path);
-        $db->query("INSERT INTO posts (caption, user_id, media) VALUES ('$caption', '$user_id', '$file_path')");
-        echo $db->error;
-    }
-    else
-    {
-        $db->query("INSERT INTO posts (caption, user_id) VALUES ('$caption','$user_id')");
-        echo $db->error;
-    }
-    
-    header("Location:home");
-} 
-else if (!empty($_POST['caption1'])) 
+if (!empty($_POST['caption1'])) 
 {
     echo "line 56"."<br>";
     $caption = $_POST['caption1'];
