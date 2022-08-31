@@ -72,7 +72,7 @@ header("Location:index");
           <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" class="block py-2 pr-4 pl-3 list-menu hover:text-yellow-300">
             <i data-tooltip-target="tooltip-post" class="bi bi-plus-square-fill fa-lg">
               <div id="tooltip-post" role="tooltip" class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300 tooltip dark:bg-gray-700">
-                New Post
+                New Story
                 <div class="tooltip-arrow" data-popper-arrow></div>
               </div>
             </i>
@@ -82,25 +82,17 @@ header("Location:index");
             <div class="modal-dialog">
               <div class="modal-content bg-dark">
                 <div class="modal-header">
-                  <h5 class="modal-title text-lg" id="exampleModalLabel">Add New Post</h5>
+                  <h5 class="modal-title text-lg" id="exampleModalLabel">Add New Story</h5>
                   <button class="btn-close bg-light text-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
-                  <form action="newPost" enctype="multipart/form-data" id="add-new-post" method="post">
-                    <div class="mb-3">
-                      <label for="exampleFormControlTextarea1" class="form-label">Caption :</label>
-                      <textarea placeholder="what is going on in your mind . . ." name="caption1" required class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                    </div>
+                  <form action="newStory" enctype="multipart/form-data" id="add-new-post" method="post">
+                    <label for="fileUpload">Add media :</label>
                     <div class="mb-3 d-flx">
-                      <span>Would you like to share the media with your post?</span>
-                      <span class="ms-1">
-                        <button onclick="UploadMedia('show')" type="button" class="btn btn-sm btn-primary px-2 py-0 me-3">Yes</button>
-                        <button onclick="UploadMedia('hide')" type="button" class="btn btn-sm btn-danger px-2 py-0">No</button>
-                      </span>
-                      <div id="media" style="display: none;" class="col-12 my-3">
+                      <div id="media" class="col-12 my-2">
                         <div class="input-group input-group-sm">
-                          <input accept="image/*, video/*, audio/*" onchange="CheckSize(this)" type="file" class="form-control" id="fileUpload" name="fileUpload">
+                          <input accept="image/*" required onchange="CheckSize(this)" type="file" class="form-control" id="fileUpload" name="fileUpload">
                           <button onclick="CheckInput('media','fileUpload')" class="btn focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm" type="button" id="button-addon1">Done</button>
                         </div>
                       </div>

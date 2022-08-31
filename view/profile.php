@@ -9,7 +9,7 @@ include  'controller/calculate_fallows.php';
 include 'controller/CheckLike_function.php';
 include 'controller/send_follows.php';
 include 'controller/send_likes.php';
-
+$_SESSION['username_login']['location'] = "profile";
 if (!empty($_GET['id'])) {
     $user_id = $_GET['id'];
     $user_login_id = $_SESSION['username_login']['id'];
@@ -31,7 +31,7 @@ foreach ($posts as $post) {
     $post['comments_count'] = $db->query("SELECT COUNT(*) AS comments_count FROM comments WHERE post_id = $post_id")->fetch_assoc();
     $post_array[] = $post;
 }
-$_SESSION['username_login']['location'] = "profile";
+
 ?>
 <div class="d-flex justify-content-center">
     <div class="col-12 col-xxl-8 col-xl-8 col-lg-8 col-md-8">

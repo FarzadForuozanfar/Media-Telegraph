@@ -87,7 +87,7 @@
                             </div>
                         </div>
                         <div class="card-footer d-grid gap-2 mx-auto">
-                            <a href="index" class="btn btn-primary">already have an account</a>
+                            <a href="index" class="btn btn-outline-primary text-gray-900 hover-text-gray-50">already have an account</a>
                             <button form="sign-up" class="focus:outline-none text-dark bg-yellow hover:bg-yellow-800 focus:ring-4 focus:ring-yellow-300  rounded-lg text-lg py-1 dark:focus:ring-yellow-900" type="submit">Sign Up</button>
                         </div>
 
@@ -100,5 +100,6 @@
         </div>
     </div>
 </div>
-
+<script src="view/js/js-persian-cal.min.js"></script>
+<script src="view/js/calculator.js"></script>
 <?php include 'footer.php'; ?>

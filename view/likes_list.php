@@ -11,7 +11,7 @@
                     <span class="sr-only">Close modal</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body overflow-y-auto h-52 scrollbar">
 
                 <?php
                     GetLikes($post['id_post'],$_SESSION['username_login']['id']); 

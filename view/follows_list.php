@@ -17,7 +17,7 @@
                     <span class="sr-only">Close modal</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body overflow-y-auto h-52 scrollbar">
                 <?php GetFollows($id_user_proccess, "follower"); ?>
             </div>
         </div>
@@ -36,7 +36,7 @@
                     <span class="sr-only">Close modal</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body overflow-y-auto h-52 scrollbar">
                 <?php GetFollows($id_user_proccess, "following"); ?>
             </div>
         </div>

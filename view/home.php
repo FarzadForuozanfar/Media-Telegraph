@@ -1,7 +1,5 @@
-<?php include "controller/check_status.php";
-
-?>
 <?php
+include "controller/check_status.php";
 include 'header.php';
 include 'navbar.php';
 include 'model/database.php';
@@ -15,7 +13,9 @@ $post_array = array();
 $_SESSION['username_login']['location'] = "home";
 $user_id = $_SESSION['username_login']['id'];
 $user_login_follows = Calculate($user_id);
-$user = $db->query("SELECT * FROM users WHERE id = $user_id")->fetch_assoc();
+$user = $db->query("SELECT * FROM users  WHERE users.id = $user_id")->fetch_assoc();
+$user_story = $db->query("SELECT * FROM story WHERE user_id = $user_id")->fetch_assoc();
+$stories = $db->query("SELECT * , users.id AS id_user , follows.id AS id_follows , story.id AS id_story FROM users inner JOIN story ON story.user_id = users.id inner JOIN follows on follows.following_user_id = users.id WHERE follows.follower_user_id = $user_id ORDER BY time DESC");
 $posts = $db->query("SELECT * , users.id AS id_user, posts.id AS id_post, follows.id AS id_follows FROM users INNER JOIN posts ON posts.user_id = users.id inner JOIN follows on user_id = following_user_id WHERE follows.follower_user_id = $user_id ORDER BY time DESC");
 foreach ($posts as $post) {
     $post_id = $post['id_post'];
@@ -24,6 +24,7 @@ foreach ($posts as $post) {
     $post['comments_count'] = $db->query("SELECT COUNT(*) AS comments_count FROM comments WHERE post_id = $post_id")->fetch_assoc();
     $post_array[] = $post;
 }
+
 ?>
 
 
@@ -37,7 +38,7 @@ foreach ($posts as $post) {
                 <div class="card-body rounded-top d-block justify-content-center">
                     <div class="d-flex justify-content-between align-items-center">
                         <span data-tooltip-target="user-follower" class="text-center cursor-pointer" <?php if ($user_login_follows['follower'] > 0)
-                                                                        echo "data-bs-toggle='modal' data-bs-target='#follower-modal$user_id'" ?>>
+                                                                                                            echo "data-bs-toggle='modal' data-bs-target='#follower-modal$user_id'" ?>>
                             <h5><?php echo $user_login_follows['follower']; ?></h5>
                             <small>Follower</small>
                         </span>
@@ -54,7 +55,7 @@ foreach ($posts as $post) {
                                                                                                                                                         echo "view/img/female.png";
                                                                                                                                                     }
                                                                                                                                                     ?>" alt="">
-                        <span  class="text-center cursor-pointer" data-tooltip-target="user-following" <?php if ($user_login_follows['following'] > 0)
+                        <span class="text-center cursor-pointer" data-tooltip-target="user-following" <?php if ($user_login_follows['following'] > 0)
                                                                                                             echo "data-bs-toggle='modal' data-bs-target='#following-modal$user_id'" ?>>
                             <h5><?php echo $user_login_follows['following']; ?></h5>
                             <small>Following</small>
@@ -84,9 +85,70 @@ foreach ($posts as $post) {
                 </div>
             </div>
         </div>
-        
+        <!-- Story Modal -->
+        <?php foreach ($stories as $story) : ?>
+            <div class="modal fade" id="storytModal<?php echo $story['id_user'] ?>" tabindex="-1" aria-labelledby="storytModalLabel<?php echo $story['id_user'] ?>" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content bg-dark">
+                        <div class="modal-header p-0 px-2 d-flex justify-content-end">
+                            <div class="col-6">
+                                <span class="mx-2">
+                                    <span class="bg-warning text-gray-900 text-xs font-small px-1 inline-flex items-center rounded dark:bg-gray-700 dark:text-gray-300">
+                                        <svg aria-hidden="true" class="mr-1 w-3 h-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                                        </svg>
+                                        <?php echo time2str($story['time']); ?>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="col-6 d-flex justify-content-end">
+                                <?php if ($user_id == $story['id_user']) : ?>
+                                    <form action="deleteStory" method="post" >
+                                        <input type="hidden" name='id_user' value="<?php echo $user_id ?>">
+                                        <button type="submit" class="btn bi bi-trash text-white fs-5 mx-2 hover:border-0"></button>
+                                    </form>
+                                <?php endif; ?>
+                                <button data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="bi bi-x w-full h-full text-white fs-2 mx-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            <img class="rounded-3 w-full h-auto story-media" src="<?php echo $story['media'] ?>" alt="story-media">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach; ?>
         <div class="col-xxl-6 col-xl-6 col-lg-6 col-12 rounded-5">
             <div class="row">
+                <div class="col-12 mb-4">
+                    <!-- Story user -->
+                    <div class="owl-carousel gray-container rounded-4 px-2 pt-2">
+                        <div id="story-<?php echo $user_id; ?>" class="cursor-pointer code text-center" 
+                            <?php if(!empty($user_story))
+                                echo "data-bs-toggle='modal' data-bs-target='#storytModal$user_id'";
+                            ?>
+                        >
+                            <img class="rounded-5 story-image" src="<?php echo $user['image'] ?>" alt="<?php echo $user['username'] ?>">
+                            <small class="text-center text-white ">
+                                <span class="text-sm"><?php echo $user['username'] ?></span>
+                            </small>
+                        </div>
+                        <!-- Story users -->
+                        <?php foreach ($stories as $story) : ?>
+                            <?php if($story['id_user'] != $user_id): ?>
+                                <div id="story-<?php echo $story['id_user']; ?>" class="cursor-pointer code text-center" data-bs-toggle="modal" data-bs-target="#storytModal<?php echo $story['id_user'] ?>">
+                                    <img class="rounded-5 story-image" src="<?php echo $story['image'] ?>" alt="<?php echo $story['username'] ?>">
+                                    <small class="text-center text-white ">
+                                        <span class="text-sm"><?php echo $story['username'] ?></span>
+                                    </small>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+
+                    </div>
+                </div>
                 <div class="col-12 mb-4">
                     <form enctype="multipart/form-data" method="post" action="newPost" style="padding-bottom: 2px !important;" class="gray-container d-block align-items-center p-1 py-3 rounded-4">
                         <div class="d-flex" style="width: 100% !important;">
@@ -189,7 +251,7 @@ foreach ($posts as $post) {
                                                     <ul class="flex text-sm font-light">
                                                         <li class="mr-2">
                                                             <a <?php if ($user_login_follows['following'] > 0)
-                                                                                                            echo "data-bs-toggle='modal' data-bs-target='#following-modal$id_user'" ?> class="cursor-pointer hover:underline">
+                                                                    echo "data-bs-toggle='modal' data-bs-target='#following-modal$id_user'" ?> class="cursor-pointer hover:underline">
                                                                 <span class="font-semibold text-gray-50 dark:text-white"><?php echo $user_follows['following']; ?></span>
                                                                 <spa>Following
                                                                 </spa>
@@ -197,7 +259,7 @@ foreach ($posts as $post) {
                                                         </li>
                                                         <li>
                                                             <a <?php if ($user_login_follows['follower'] > 0)
-                                                                                                            echo "data-bs-toggle='modal' data-bs-target='#follower-modal$id_user'" ?> href="#" class="cursor-pointer" role="button"hover:underline">
+                                                                    echo "data-bs-toggle='modal' data-bs-target='#follower-modal$id_user'" ?> href="#" class="cursor-pointer" role="button" hover:underline">
                                                                 <span class="font-semibold text-gray-50 dark:text-white"><?php echo $user_follows['follower']; ?></span>
                                                                 <span>Followers</span>
                                                             </a>

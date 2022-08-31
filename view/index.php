@@ -58,7 +58,7 @@
 
                     </form>
                     <div class="text-center mt-3">
-                        <a href="kkk" class="text-blue-800">
+                        <a href="#" class="text-blue-800">
                             Forget Password?
                         </a>
                     </div>
